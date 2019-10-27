@@ -81,9 +81,11 @@ def q3():
         start = details['startdate']
         end = details['enddate']
 
-        cur = pypyodbc.connection.cursor()
-        cur.execute("""SELECT businessTable.name from businessTable join {0} on businessTable.business_id = {0}.business_id join checkinTable on businessTable.business_id = checkinTable.b_id where businessTable.postal_code='{1}' and CONVERT(datetime,checkinTable.date) between CAST('{2}' as date) and CAST('{3}}' as date) group by businessTable.business_id,businessTable.name order by sum(checkinTable.occurence) DESC;
-;""".format(btype,bzip,start,end))
+        cnxn = pypyodbc.connect(cnxnStr)
+        cur = cnxn.cursor()
+        cur.execute(
+            """SELECT businessTable.name from businessTable join {0} on businessTable.business_id = {0}.business_id join checkinTable on businessTable.business_id = checkinTable.b_id where businessTable.postal_code='{1}' and CONVERT(datetime,checkinTable.date) between CAST('2016-01-01' as date) and CAST('2017-01-01' as date) group by businessTable.business_id,businessTable.name order by sum(checkinTable.occurence) DESC;"""
+                .format(btype,bzip,start,end))
         data = cur.fetchall()
         return render_template("q3table.html", data=data)
 
