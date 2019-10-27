@@ -1,21 +1,17 @@
 {% extends 'base.html' %} {% block container %}
 <div class="container">
-  <h2>Select User</h2>
+  <h2>Get Business Review</h2>
   <form action="/sel_usr_table">
     <div class="row">
       <div class="col s3">
-        <label for="name">Name:</label>
+        <label for="name">Business Name:</label>
         <input type="text" name="name" id="name" />
       </div>
       <div class="col s3">
-        <label for="min">Min Rating:</label>
-        <input type="number" name="min" id="min" />
+        <label for="zip">Postal code:</label>
+        <input type="number" name="zip" id="zip" />
       </div>
-      <div class="col s3">
-        <label for="max">Max Rating:</label>
-        <input type="number" name="max" id="max" />
-      </div>
-      <button class="btn">Search</button>
+      <button class="btn" style="margin-top: 15px;">Get Reviews</button>
     </div>
   </form>
   {% block table %}{% endblock %}

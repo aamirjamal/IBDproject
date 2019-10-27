@@ -8,11 +8,6 @@ app = Flask(__name__)
 cnxnStr = 'DRIVER={ODBC Driver 17 for SQL Server};SERVER=DESKTOP-3BKTPOD;DATABASE=yelp;Trusted_Connection=yes;'
 
 
-
-
-
-
-
 @app.route('/')
 def index():
     return render_template('home.html')
@@ -40,7 +35,7 @@ def q1():
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
         cur.execute("""select name from userTable where name like '{0}%' and u_id in (select u_id from reviewTable group by u_id having count(u_id) > {1});"""
-                     .format(name, reviews))
+                    .format(name, reviews))
         data = cur.fetchall()
         return render_template("q1table.html", data=data)
 
@@ -67,7 +62,7 @@ join
 ( SELECT b2.name, b2.business_id ,count(rev2.r_id) as count2 from businessTable as b2 join {0} as r2 on b2.business_id = r2.business_id join reviewTable as rev2 on b2.business_id = rev2.b_id where b2.postal_code='{1}' and rev2.stars>{3} group by b2.business_id,b2.name) as tab2
 
 ON tab1.business_id=tab2.business_id WHERE count2/count1 >{2};"""
-            .format(btype,bzip,percent,rating))
+            .format(btype, bzip, percent, rating))
         data = cur.fetchall()
         return render_template("q2table.html", data=[btype, bzip, percent, rating])
 
@@ -136,17 +131,18 @@ def sel_usr():
     return render_template('select_user.html')
 
 
+# business review query here.. pls delete this comment after writing the query..
 @app.route('/sel_usr_table', methods=['GET', 'POST'])
 def usr_table():
     if request.method == "GET":
         details = request.args
         name = details['name']
-        min_rating = details['min']
-        max_rating = details['max']
+        b_zip = details['zip']
 
-        cur = mysql.connection.cursor()
-        cur.execute(
-            """select name from user_table where name ='{0}' and average_stars >= {1} and average_stars <= {2}""".format(name, min_rating, max_rating))
+        cnxn = pypyodbc.connect(cnxnStr)
+        cur = cnxn.cursor()
+        # query should return reviewer name, review text and stars.
+        cur.execute("""select query for """.format(name, b_zip))
         data = cur.fetchall()
         return render_template("sel_usr_table.html", data=[data])
 
