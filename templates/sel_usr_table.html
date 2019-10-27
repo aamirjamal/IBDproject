@@ -1,13 +1,13 @@
 {% extends 'select_user.html' %} {% block table %} {% if data|length %}
 
 <table id="data" class="centered striped">
-  <thead>
+  <th style="text-align: center">
   <tr>
     <td>Name</td>
     <td>Review</td>
     <td>Star Given</td>
   </tr>
-  </thead>
+  </th>
   <tbody>
     {% for n in data[0] %}
     <tr>
