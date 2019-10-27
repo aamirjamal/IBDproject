@@ -1,12 +1,19 @@
 {% extends 'select_user.html' %} {% block table %} {% if data|length %}
 
 <table id="data" class="centered striped">
+  <thead>
+  <tr>
+    <td>Name</td>
+    <td>Review</td>
+    <td>Star Given</td>
+  </tr>
+  </thead>
   <tbody>
-    {% for n in data %}
+    {% for n in data[0] %}
     <tr>
-      <td>{{ n[0][0] }}</td>
-      <td>{{ n[0][1] }}</td>
-      <td>{{ n[0][2] }}</td>
+      <td>{{ n[0] }}</td>
+      <td>{{ n[1] }}</td>
+      <td>{{ n[2] }}</td>
     </tr>
     {% endfor %}
   </tbody>
