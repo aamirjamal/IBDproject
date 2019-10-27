@@ -115,5 +115,25 @@ def query5():
     return render_template('query5.html')
 
 
+@app.route('/sel_usr', methods=['GET', 'POST'])
+def sel_usr():
+    return render_template('select_user.html')
+
+
+@app.route('/sel_usr_table', methods=['GET', 'POST'])
+def usr_table():
+    if request.method == "GET":
+        details = request.args
+        name = details['name']
+        min_rating = details['min']
+        max_rating = details['max']
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """select name from user_table where name ='{0}' and average_stars >= {1} and average_stars <= {2}""".format(name, min_rating, max_rating))
+        data = cur.fetchall()
+        return render_template("sel_usr_table.html", data=[data])
+
+
 if __name__ == '__main__':
     app.run(debug=True)

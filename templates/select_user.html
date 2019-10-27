@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block container %}
+<div class="container">
+  <h2>Select User</h2>
+  <form action="/sel_usr_table">
+    <div class="row">
+      <div class="col s3">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" />
+      </div>
+      <div class="col s3">
+        <label for="min">Min Rating:</label>
+        <input type="number" name="min" id="min" />
+      </div>
+      <div class="col s3">
+        <label for="max">Max Rating:</label>
+        <input type="number" name="max" id="max" />
+      </div>
+      <button class="btn">Search</button>
+    </div>
+  </form>
+  {% block table %}{% endblock %}
+</div>
+{% endblock %}
