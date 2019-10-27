@@ -64,7 +64,7 @@ join
 ON tab1.business_id=tab2.business_id WHERE count2/count1 >{2};"""
             .format(btype, bzip, percent, rating))
         data = cur.fetchall()
-        return render_template("q2table.html", data=[btype, bzip, percent, rating])
+        return render_template("q2table.html", data=data)
 
 
 @app.route('/q3', methods=['GET', 'POST'])
@@ -76,10 +76,13 @@ def q3():
         start = details['startdate']
         end = details['enddate']
 
-        # cur = mysql.connection.cursor()
-        # cur.execute("""select name from business_table2 where postal_code ='{zip}' and business_id in (select b_id from reviewTable group by b_id having avg(b_id)>{rating});""")
-        # data = cur.fetchall()
-        return render_template("q3table.html", data=[btype, bzip, start, end])
+        cnxn = pypyodbc.connect(cnxnStr)
+        cur = cnxn.cursor()
+        cur.execute(
+            """SELECT businessTable.name from businessTable join {0} on businessTable.business_id = {0}.business_id join checkinTable on businessTable.business_id = checkinTable.b_id where businessTable.postal_code='{1}' and CONVERT(datetime,checkinTable.date) between CAST('2016-01-01' as date) and CAST('2017-01-01' as date) group by businessTable.business_id,businessTable.name order by sum(checkinTable.occurence) DESC;"""
+                .format(btype,bzip,start,end))
+        data = cur.fetchall()
+        return render_template("q3table.html", data=data)
 
 
 @app.route('/q4', methods=['GET', 'POST'])
