@@ -79,7 +79,7 @@ def q3():
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
         cur.execute(
-            """SELECT businessTable.name from businessTable join {0} on businessTable.business_id = {0}.business_id join checkinTable on businessTable.business_id = checkinTable.b_id where businessTable.postal_code='{1}' and CONVERT(datetime,checkinTable.date) between CAST('2016-01-01' as date) and CAST('2017-01-01' as date) group by businessTable.business_id,businessTable.name order by sum(checkinTable.occurence) DESC;"""
+            """SELECT businessTable.name from businessTable join {0} on businessTable.business_id = {0}.business_id join checkinTable on businessTable.business_id = checkinTable.b_id where businessTable.postal_code='{1}' and CONVERT(datetime,checkinTable.date) between CAST('{2}' as date) and CAST('{3}' as date) group by businessTable.business_id,businessTable.name order by sum(checkinTable.occurence) DESC;"""
             .format(btype, bzip, start, end))
         data = cur.fetchall()
         return render_template("q3table.html", data=data)
@@ -103,7 +103,7 @@ join
 (SELECT b2.name,b2.business_id,count(rev2.r_id) as count2 from friendsTable as f2 join userTable u2 on f2.u_id=u2.u_id join reviewTable as rev2 on f_id=rev2.u_id join businessTable as b2 on rev2.b_id=b2.business_id join restaurantTable as r2 on b2.business_id=r2.business_id where rev2.stars<3 and u2.u_id='{0}'  group by b2.business_id,b2.name) as tab2
 
 ON tab1.business_id=tab2.business_id WHERE count1>count2 ;;"""
-                .format(key))
+            .format(key))
         data = cur.fetchall()
         return render_template("q4table.html", data=data)
 
@@ -179,6 +179,24 @@ def find_business_table():
         cur.execute("""select query for """.format(b_type, b_zip, stars))
         data = cur.fetchall()
         return render_template("find_b_table.html", data=[data])
+
+
+@app.route('/find_friends', methods=['GET', 'POST'])
+def find_friends():
+    return render_template('find_friends.html')
+
+
+@app.route('/find_f_table', methods=['GET', 'POST'])
+def find_f_table():
+    if request.method == "GET":
+        details = request.args
+        key = details['userid']
+        cnxn = pypyodbc.connect(cnxnStr)
+        cur = cnxn.cursor()
+        # query should return business name, business address and desc stars.
+        cur.execute("""select query for """.format(key))
+        data = cur.fetchall()
+        return render_template("find_f_table.html", data=[data])
 
 
 if __name__ == '__main__':
