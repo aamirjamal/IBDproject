@@ -156,7 +156,7 @@ def usr_table():
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
         # query should return reviewer name, review text and stars.
-        cur.execute("""select query for """.format(name, b_zip))
+        cur.execute("""SELECT userTable.name,reviewTable.text,reviewTable.stars FROM businessTable join reviewTable on businessTable.business_id=reviewTable.b_id join userTable on reviewTable.u_id=userTable.u_id where businessTable.name='{0}' and businessTable.postal_code='{1}' ;""".format(name, b_zip))
         data = cur.fetchall()
         return render_template("sel_usr_table.html", data=[data])
 
