@@ -1,17 +1,17 @@
 from flask import Flask, request
 from flask import render_template
-from flask_mysqldb import MySQL
+import pypyodbc
+
 
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = '129.21.65.218'
-app.config['MYSQL_USER'] = 'aj'
-app.config['MYSQL_PASSWORD'] = 'abcd1234'
-app.config['MYSQL_DB'] = 'MyDatabaseFinal'
-app.config['MYSQL_CONNECT_TIMEOUT'] = 180
+cnxnStr = 'DRIVER={ODBC Driver 17 for SQL Server};SERVER=DESKTOP-3BKTPOD;DATABASE=yelp;Trusted_Connection=yes;'
 
-mysql = MySQL(app)
+
+
+
+
 
 
 @app.route('/')
@@ -30,13 +30,18 @@ def q1():
         details = request.args
         name = details['name']
         reviews = details['reviews']
-        cur = mysql.connection.cursor()
-        cur.execute("""select name from user_table 
-                    where name like '{0}%' and user_id in 
-                    (select u_id from reviewTable 
-                    group by u_id 
-                    having count(u_id) > {1});"""
-                    .format(name, reviews))
+        # cur = mysql.connection.cursor()
+        # cur.execute("""select name from user_table
+        #             where name like '{0}%' and user_id in
+        #             (select u_id from reviewTable
+        #             group by u_id
+        #             having count(u_id) > {1});"""
+        #             .format(name, reviews))
+
+        cnxn = pypyodbc.connect(cnxnStr)
+        cur = cnxn.cursor()
+        cur.execute("""select name from userTable where name like '{0}%' and u_id in (select u_id from reviewTable group by u_id having count(u_id) > {1});"""
+                     .format(name, reviews))
         data = cur.fetchall()
         return render_template("q1table.html", data=data)
 
@@ -52,7 +57,19 @@ def q2():
 
         # cur = mysql.connection.cursor()
         # cur.execute("""select name from business_table2 where postal_code ='{zip}' and business_id in (select b_id from reviewTable group by b_id having avg(b_id)>{rating});""")
-        # data = cur.fetchall()
+
+        cnxn = pypyodbc.connect(cnxnStr)
+        cur = cnxn.cursor()
+        cur.execute(
+            """SELECT tab1.name from  ( SELECT b1.name, b1.business_id ,count(rev1.r_id) as count1 from businessTable as b1 join restaurantTable as r1 on b1.business_id = r1.business_id join reviewTable as rev1 on b1.business_id = rev1.b_id where b1.postal_code='89121' group by b1.business_id,b1.name) as tab1
+
+join
+
+( SELECT b2.name, b2.business_id ,count(rev2.r_id) as count2 from businessTable as b2 join restaurantTable as r2 on b2.business_id = r2.business_id join reviewTable as rev2 on b2.business_id = rev2.b_id where b2.postal_code='89121' and rev2.stars>3 group by b2.business_id,b2.name) as tab2
+
+ON tab1.business_id=tab2.business_id WHERE count2/count1 >0.5;;"""
+            .format(name, reviews))
+        data = cur.fetchall()
         return render_template("q2table.html", data=[btype, bzip, percent, rating])
 
 
