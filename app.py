@@ -176,7 +176,7 @@ def find_business_table():
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
         # query should return business name, business address and desc stars.
-        cur.execute("""select query for """.format(b_type, b_zip, stars))
+        cur.execute("""SELECT DISTINCT(businessTable.name), businessTable.address, reviewTable.stars from businessTable join {0} on businessTable.business_id={0}.business_id join reviewTable on businessTable.business_id=reviewTable.b_id where businessTable.postal_code='{1}' and reviewTable.stars>'{2}' order by reviewTable.stars DESC; """.format(b_type, b_zip, stars))
         data = cur.fetchall()
         return render_template("find_b_table.html", data=[data])
 
