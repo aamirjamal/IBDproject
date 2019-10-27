@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block container %}
+<div class="container">
+  <form action="/q1">
+    <h4>Find top businesses in an area:</h4>
+    <div class="row">
+      <select name="type" class="browser-default input-field col s3">
+        <option value="" disabled selected>Choose Business type</option>
+        <option value="restaurantTable">Restaurant</option>
+        <option value="beautyTable">Beauty & spa</option>
+        <option value="homeservicesTable">Home Services</option>
+        <option value="shoppingTable">Shopping</option>
+      </select>
+      <div class="col s2">
+        <label for="zip"></label>
+        <input placeholder="Zip Code" id="zip" type="number" name="zip" />
+      </div>
+      <div class="col s2">
+        <label for="stars"></label>
+        <input placeholder="eg: 3" id="stars" type="number" name="stars" />
+      </div>
+      <button style="margin-top: 25px;" class="col s2 btn-small offset-s1">
+        Run Query
+      </button>
+    </div>
+  </form>
+
+  {% block table %}{% endblock %}
+</div>
+{% endblock %}

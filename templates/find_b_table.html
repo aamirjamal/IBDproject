@@ -1,12 +1,10 @@
-{% extends 'select_user.html' %} {% block table %} {% if data|length %}
+{% extends 'find_business.html' %} {% block table %} {% if data|length %}
 
 <table id="data" class="centered striped">
   <tbody>
     {% for n in data %}
     <tr>
-      <td>{{ n[0][0] }}</td>
-      <td>{{ n[0][1] }}</td>
-      <td>{{ n[0][2] }}</td>
+      <td>{{ n[0] }}</td>
     </tr>
     {% endfor %}
   </tbody>

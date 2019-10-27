@@ -80,7 +80,7 @@ def q3():
         cur = cnxn.cursor()
         cur.execute(
             """SELECT businessTable.name from businessTable join {0} on businessTable.business_id = {0}.business_id join checkinTable on businessTable.business_id = checkinTable.b_id where businessTable.postal_code='{1}' and CONVERT(datetime,checkinTable.date) between CAST('2016-01-01' as date) and CAST('2017-01-01' as date) group by businessTable.business_id,businessTable.name order by sum(checkinTable.occurence) DESC;"""
-                .format(btype,bzip,start,end))
+            .format(btype, bzip, start, end))
         data = cur.fetchall()
         return render_template("q3table.html", data=data)
 
@@ -148,6 +148,26 @@ def usr_table():
         cur.execute("""select query for """.format(name, b_zip))
         data = cur.fetchall()
         return render_template("sel_usr_table.html", data=[data])
+
+
+@app.route('/find_b', methods=['GET', 'POST'])
+def find_business():
+    return render_template('find_business.html')
+
+
+@app.route('/find_b_table', methods=['GET', 'POST'])
+def find_business_table():
+    if request.method == "GET":
+        details = request.args
+        b_type = details['type']
+        b_zip = details['zip']
+        stars = details['stars']
+        cnxn = pypyodbc.connect(cnxnStr)
+        cur = cnxn.cursor()
+        # query should return business name, business address and stars.
+        cur.execute("""select query for """.format(b_type, b_zip, stars))
+        data = cur.fetchall()
+        return render_template("find_b_table.html", data=[data])
 
 
 if __name__ == '__main__':
