@@ -175,7 +175,7 @@ def find_business_table():
         stars = details['stars']
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
-        # query should return business name, business address and stars.
+        # query should return business name, business address and desc stars.
         cur.execute("""select query for """.format(b_type, b_zip, stars))
         data = cur.fetchall()
         return render_template("find_b_table.html", data=[data])
