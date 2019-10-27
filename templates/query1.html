@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block container %}
+<div class="container">
+  <form action="/q1">
+    <h4>Query 1</h4>
+    <div class="row">
+      <div class="col s3">
+        <label for="name">Name Starts with:</label>
+        <input id="name" type="text" name="name" />
+      </div>
+      <div class="col s3">
+        <label for="reviews">More number of reviews than:</label>
+        <input id="reviews" type="number" name="reviews" />
+      </div>
+      <button style="margin-top: 25px;" class="col s2 btn-small offset-s1">
+        Run Query
+      </button>
+    </div>
+  </form>
+
+  {% block table %}{% endblock %}
+</div>
+{% endblock %}

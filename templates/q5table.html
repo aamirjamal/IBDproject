@@ -1,0 +1,14 @@
+{% extends 'query5.html' %} {% block table %} {% if data|length %}
+
+<table id="data" class="centered striped">
+  <tbody>
+    {% for n in data %}
+    <tr>
+      <td>{{ n[0] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<h2>No data found.</h2>
+{% endif %} {% endblock %}

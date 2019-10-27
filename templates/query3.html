@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block container %}
+<script>
+  $(document).ready(function() {
+    $(".datepicker").datepicker();
+  });
+</script>
+<div class="container">
+  <form action="/q3">
+    <h4>Query 3</h4>
+    <div class="row">
+      <select class="browser-default input-field col s3" name="type">
+        <option value="" disabled selected>Choose Business type</option>
+        <option value="1">Restaurant</option>
+        <option value="2">Beauty & spa</option>
+        <option value="3">Home Services</option>
+        <option value="3">Shopping</option>
+        <option value="3">Misc</option>
+      </select>
+
+      <div class="col s2">
+        <label for="zip"></label>
+        <input placeholder="Zip Code" id="zip" type="number" name="zip" />
+      </div>
+
+      <div class="col s2">
+        <label for="startdate"></label>
+        <input
+          placeholder="Start Date"
+          type="text"
+          class="datepicker"
+          id="startdate"
+          name="startdate"
+        />
+      </div>
+
+      <div class="col s2">
+        <label for="enddate"></label>
+        <input
+          placeholder="End Date"
+          type="text"
+          class="datepicker"
+          id="enddate"
+          name="enddate"
+        />
+      </div>
+
+      <button style="margin-top: 15px;;" class="col s2 btn-small offset-s1">
+        Run Query
+      </button>
+    </div>
+  </form>
+  {% block table %}{% endblock %}
+</div>
+{% endblock %}

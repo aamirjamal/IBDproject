@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% block container %}
+<script>
+  $(document).ready(function() {
+    $(".datepicker").datepicker();
+  });
+</script>
+<div class="container">
+  <form action="/q5">
+    <h4>Query 5</h4>
+    <div class="row">
+      <div class="col s4">
+        <label for="resName">Enter the Name of the restaurant:</label>
+        <input
+          placeholder="Restaurant Name"
+          id="resName"
+          type="text"
+          name="resName"
+        />
+      </div>
+
+      <button style="margin-top: 15px;;" class="col s2 btn-small offset-s1">
+        Run Query
+      </button>
+    </div>
+  </form>
+  {% block table %}{% endblock %}
+</div>
+{% endblock %}

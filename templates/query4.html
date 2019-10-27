@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block container %}
+<script>
+  $(document).ready(function() {
+    $(".datepicker").datepicker();
+  });
+</script>
+<div class="container">
+  <form action="/q4">
+    <h4>Query 4</h4>
+    <div class="row">
+      <div class="col s3">
+        <label for="userid">Enter the primary key:</label>
+        <input placeholder="User ID" id="userid" type="text" name="userid" />
+      </div>
+
+      <button style="margin-top: 15px;;" class="col s2 btn-small offset-s1">
+        Run Query
+      </button>
+    </div>
+  </form>
+  {% block table %}{% endblock %}
+</div>
+{% endblock %}

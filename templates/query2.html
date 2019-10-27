@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% block container %}
+<div class="container">
+  <form action="/q2">
+    <h4>Query 2</h4>
+    <div class="row">
+      <select name="type" class="browser-default input-field col s3">
+        <option value="" disabled selected>Choose Business type</option>
+        <option value="restaurants">Restaurant</option>
+        <option value="beauty">Beauty & spa</option>
+        <option value="homeservices">Home Services</option>
+        <option value="shopping">Shopping</option>
+        <option value="3">Misc</option>
+      </select>
+
+      <div class="col s2">
+        <label for="zip"></label>
+        <input placeholder="Zip Code" id="zip" type="number" name="zip" />
+      </div>
+      <div class="col s1">
+        <label for="percent"></label>
+        <input placeholder="%" id="percent" type="number" name="percent" />
+      </div>
+      <div class="col s1">
+        <label for="rating"></label>
+        <input placeholder="Stars" id="rating" type="number" name="rating" />
+      </div>
+      <button style="margin-top: 15px;;" class="col s2 btn-small offset-s1">
+        Run Query
+      </button>
+    </div>
+  </form>
+  {% block table %}{% endblock %}
+</div>
+{% endblock %}
