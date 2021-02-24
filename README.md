@@ -1,2 +1,8 @@
 # IBDproject
-This contains the flask api and the front end of our big data project. Front end is created using Jinja2 and the dataset used is of Yelp and loaded in MySQL.
+
+In this project, we demonstrated understanding of database normalizing using YELP dataset.
+Restructured the database to enable faster access and avoid the expensive join operations.
+A Flask application is built uisng this new dataset to handle more complex queries.
+Technologies used:
+Flask
+MySQL
