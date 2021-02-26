@@ -24,14 +24,7 @@ def q1():
         details = request.args
         name = details['name']
         reviews = details['reviews']
-        # cur = mysql.connection.cursor()
-        # cur.execute("""select name from user_table
-        #             where name like '{0}%' and user_id in
-        #             (select u_id from reviewTable
-        #             group by u_id
-        #             having count(u_id) > {1});"""
-        #             .format(name, reviews))
-
+        
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
         cur.execute("""select name from userTable where name like '{0}%' and u_id in (select u_id from reviewTable group by u_id having count(u_id) > {1});"""
@@ -48,9 +41,6 @@ def q2():
         bzip = details['zip']
         percent = int(details['percent'])/100
         rating = details['rating']
-
-        # cur = mysql.connection.cursor()
-        # cur.execute("""select name from business_table2 where postal_code ='{zip}' and business_id in (select b_id from reviewTable group by b_id having avg(b_id)>{rating});""")
 
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
@@ -79,7 +69,7 @@ def q3():
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
         cur.execute(
-            """SELECT businessTable.name from businessTable join {0} on businessTable.business_id = {0}.business_id join checkinTable on businessTable.business_id = checkinTable.b_id where businessTable.postal_code='{1}' and CONVERT(datetime,checkinTable.date) between CAST('{2}' as date) and CAST('{3}' as date) group by businessTable.business_id,businessTable.name order by sum(checkinTable.occurence) DESC;"""
+            """SELECT businessTable.name from businessTable join {0} on businessTable.business_id   = {0}.business_id join checkinTable on businessTable.business_id = checkinTable.b_id where businessTable.postal_code='{1}' and CONVERT(datetime,checkinTable.date) between CAST('{2}' as date) and CAST('{3}' as date) group by businessTable.business_id,businessTable.name order by sum(checkinTable.occurence) DESC;"""
             .format(btype, bzip, start, end))
         data = cur.fetchall()
         return render_template("q3table.html", data=data)
@@ -114,9 +104,6 @@ def q5():
         details = request.args
         rname = details['resName']
 
-        # cur = mysql.connection.cursor()
-        # cur.execute("""select name from business_table2 where postal_code ='{zip}' and business_id in (select b_id from reviewTable group by b_id having avg(b_id)>{rating});""")
-        # data = cur.fetchall()
         return render_template("q5table.html", data=[rname])
 
 
@@ -145,7 +132,6 @@ def sel_usr():
     return render_template('select_user.html')
 
 
-# business review query here.. pls delete this comment after writing the query..
 @app.route('/sel_usr_table', methods=['GET', 'POST'])
 def usr_table():
     if request.method == "GET":
@@ -155,7 +141,6 @@ def usr_table():
 
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
-        # query should return reviewer name, review text and stars.
         cur.execute("""SELECT userTable.name,reviewTable.text,reviewTable.stars FROM businessTable join reviewTable on businessTable.business_id=reviewTable.b_id join userTable on reviewTable.u_id=userTable.u_id where businessTable.name='{0}' and businessTable.postal_code='{1}' ;""".format(name, b_zip))
         data = cur.fetchall()
         return render_template("sel_usr_table.html", data=[data])
@@ -175,7 +160,6 @@ def find_business_table():
         stars = details['stars']
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
-        # query should return business name, business address and desc stars.
         cur.execute("""SELECT DISTINCT(businessTable.name), businessTable.address, reviewTable.stars from businessTable join {0} on businessTable.business_id={0}.business_id join reviewTable on businessTable.business_id=reviewTable.b_id where businessTable.postal_code='{1}' and reviewTable.stars>'{2}' order by reviewTable.stars DESC; """.format(b_type, b_zip, stars))
         data = cur.fetchall()
         return render_template("find_b_table.html", data=[data])
@@ -193,7 +177,6 @@ def find_f_table():
         key = details['userid']
         cnxn = pypyodbc.connect(cnxnStr)
         cur = cnxn.cursor()
-        # query should return business name, business address and desc stars.
         cur.execute("""select query for """.format(key))
         data = cur.fetchall()
         return render_template("find_f_table.html", data=[data])
