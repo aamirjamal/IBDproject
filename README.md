@@ -27,8 +27,6 @@ Install requirements.txt using ```pip install -r requirements.txt```.
 - Flask
 - Python
 - Bootstrap
-
-
-## Technologies Used
-- Flask
 - MySQL
+
+
